@@ -1,0 +1,8 @@
+# depslib dependency file v1.0
+1556201832 source:c:\users\teodor\desktop\oop\treasurehunt\main.cpp
+	<iostream>
+	<conio.h>
+	<stdio.h>
+	<string.h>
+	<stdlib.h>
+
