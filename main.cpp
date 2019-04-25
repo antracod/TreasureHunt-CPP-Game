@@ -57,7 +57,31 @@ public:
 
 class UHunter : Hunter
 {
+    bool grabTreasure(coord position)
+    {
 
+    }
+};
+class DHunter : Hunter
+{
+    bool grabTreasure(coord position)
+    {
+
+    }
+};
+class LHunter : Hunter
+{
+    bool grabTreasure(coord position)
+    {
+
+    }
+};
+class RHunter : Hunter
+{
+    bool grabTreasure(coord position)
+    {
+
+    }
 };
 
 
