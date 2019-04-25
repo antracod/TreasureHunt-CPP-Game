@@ -15,7 +15,11 @@ private:
 public:
     coord getPosition()
     {
-
+        return position;
+    }
+    void setPosition(coord new_position)
+    {
+        position = new_position;
     }
 
 
