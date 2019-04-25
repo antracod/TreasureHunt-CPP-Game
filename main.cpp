@@ -12,6 +12,7 @@ private:
     int map_array[100][100];
     int limit;
     int treasure_count = 3;
+    vector <string> winnerList;
 public:
     int getTreasureCount()
     {
@@ -80,6 +81,9 @@ public:
     }
     virtual bool grabTreasure(coord position,MapSystem my_map)
     {
+        coord tposition;
+        tposition.x = position.x;
+        tposition.y = position.y;
         if(my_map.getPositionValue(tposition)==6)
         {
             my_map.setPositionValue(position,0);
@@ -101,16 +105,16 @@ public:
     {
         return position;
     }
-    bool okMovementUp(coord current_pos)
+    bool okMovementUp()
     {
-        if(current_pos.x>1)
+        if(position.x>1)
             return true;
         else
             return false;
     }
-    bool okMovementDown(coord current_pos,int limit)
+    bool okMovementDown(int limit)
     {
-        if(current_pos.x<limit)
+        if(position.x<limit)
         {
             return true;
         }
@@ -119,26 +123,53 @@ public:
             return false;
         }
     }
-    bool okMovementLeft(coord current_pos)
+    bool okMovementLeft()
     {
-        if(current_pos.y>1)
+        if(position.y>1)
             return true;
         else
             return false;
     }
-    bool okMovementRight(coord current_pos,int limit)
+    bool okMovementRight(int limit)
     {
-        if(current_pos.y<limit)
+        if(position.y<limit)
             return true;
         else
             return false;
+    }
+    virtual void moveHunterOnMap(MapSystem my_map,int typeValue)
+    {
+        coord next_position;
+        if(okMovementUp()==true)
+        {
+            next_position.x = position.x-1;
+            next_position.y = position.y;
+            if(my_map.getPositionValue(next_position)==0)
+            {
+                my_map.setPositionValue(position,0);
+                my_map.setPositionValue(position,typeValue);
+                position.x = next_position.x;
+                position.y = next_position.y;
+
+            }
+        }
     }
 };
 
-class UHunter : Hunter
+class UHunter :public Hunter
 {
+private:
+      const int typevalue = 1;
+public:
+    int getTypeValue()
+    {
+        return typevalue;
+    }
     bool grabTreasure(coord position, MapSystem my_map)
     {
+        coord tposition;
+        tposition.x = position.x;
+        tposition.y = position.y;
         if(my_map.getPositionValue(tposition)==6)
         {
             my_map.setPositionValue(position,-1);
@@ -148,11 +179,22 @@ class UHunter : Hunter
         else
             return false;
     }
+
 };
-class DHunter : Hunter
+class DHunter : public Hunter
 {
+private:
+      const int typevalue = 2;
+public:
+    int getTypeValue()
+    {
+        return typevalue;
+    }
     bool grabTreasure(coord position, MapSystem my_map)
     {
+        coord tposition;
+        tposition.x = position.x;
+        tposition.y = position.y;
         if(my_map.getPositionValue(tposition)==6)
         {
             my_map.setPositionValue(position,-2);
@@ -162,15 +204,23 @@ class DHunter : Hunter
         else
             return false;
     }
-    void setPosition(int limit)
-    {
 
-    }
 };
-class LHunter : Hunter
+
+class LHunter : public Hunter
 {
+private:
+     const int typevalue = 3;
+public:
+    int getTypeValue()
+    {
+        return typevalue;
+    }
     bool grabTreasure(coord position, MapSystem my_map)
     {
+        coord tposition;
+        tposition.x = position.x;
+        tposition.y = position.y;
         if(my_map.getPositionValue(tposition)==6)
         {
             my_map.setPositionValue(position,-3);
@@ -180,11 +230,24 @@ class LHunter : Hunter
         else
             return false;
     }
+
+
 };
-class RHunter : Hunter
+
+class RHunter : public Hunter
 {
+private:
+    const int typevalue = 4;
+public:
+    int getTypeValue()
+    {
+        return typevalue;
+    }
     bool grabTreasure(coord position, MapSystem my_map)
     {
+        coord tposition;
+        tposition.x = position.x;
+        tposition.y = position.y;
         if(my_map.getPositionValue(tposition)==6)
         {
             my_map.setPositionValue(position,-4);
@@ -194,7 +257,9 @@ class RHunter : Hunter
         else
             return false;
     }
+
 };
+
 
 void Simulate()
 {
@@ -211,19 +276,17 @@ void Simulate()
 
     for(int t=1;t<=rounds;t++)
     {
-        moveUHunter(my_map,my_UHunter);
-        moveDHunter(my_map,my_DHunter);
-        moveLHunter(my_map,my_LHunter);
-        moveRHunter(my_map,my_DHunter);
+        my_UHunter.moveHunterOnMap(my_map,my_UHunter.getTypeValue());
+        my_DHunter.moveHunterOnMap(my_map,my_DHunter.getTypeValue());
+        my_LHunter.moveHunterOnMap(my_map,my_LHunter.getTypeValue());
+        my_RHunter.moveHunterOnMap(my_map,my_RHunter.getTypeValue());
         my_map.print_map();
 
-        if(my_map.treasure_count()==0)
+        if(my_map.getTreasureCount()==0)
             break;
-        else if(my_UHunter.can_move()==0 && my_DHunter.can_move()==0 && my_LHunter.can_move()==0 &&  my_RHunter.can_move()==0)
+        else if(my_UHunter.getCanMove()==0 && my_DHunter.getCanMove()==0 && my_LHunter.getCanMove()==0 &&  my_RHunter.getCanMove()==0)
             break;
     }
-
-    cout<<<<'\n'<<"END GAME";
 
 }
 
