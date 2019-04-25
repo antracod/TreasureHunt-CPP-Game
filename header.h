@@ -6,16 +6,13 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <vector>
+#include <algorithm>
 
 using namespace std;
 
 ifstream in("treasure.in");
 
-
-int removeit()
-{
-    return 1;
-}
 
 
 #endif // HEADER_H_INCLUDED

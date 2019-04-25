@@ -1,6 +1,10 @@
 # depslib dependency file v1.0
-1556201832 source:c:\users\teodor\desktop\oop\treasurehunt\main.cpp
+1556219859 source:c:\users\teodor\desktop\oop\treasurehunt\main.cpp
+	"header.h"
+
+1556219605 c:\users\teodor\desktop\oop\treasurehunt\header.h
 	<iostream>
+	<fstream>
 	<conio.h>
 	<stdio.h>
 	<string.h>

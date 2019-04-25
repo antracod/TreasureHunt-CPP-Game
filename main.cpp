@@ -8,7 +8,6 @@ struct coord
 
 class MapSystem
 {
-
 private:
     int map_array[100][100];
     int limit;
@@ -32,19 +31,29 @@ public:
     void load_map()
     {
         in>>limit;
-        for(int i=1;i<=limit;i++)
+        for(int i=1; i<=limit; i++)
         {
-            for(int j=1;j<=limit;j++)
+            for(int j=1; j<=limit; j++)
             {
                 int value;
                 in>>value;
-                setPositionValue(position,x);
+                coord position;
+                position.x = i;
+                position.y = j;
+                setPositionValue(position,value);
             }
         }
     }
     void print_map()
     {
-
+        for(int i=1; i<=limit; i++)
+        {
+            for(int j=1; j<=limit; j++)
+            {
+                cout<<map_array[i][j]<<" ";
+            }
+            cout<<'\n';
+        }
     }
 
 };
@@ -124,7 +133,7 @@ class UHunter : Hunter
 };
 class DHunter : Hunter
 {
-     bool grabTreasure(coord position,coord tposition, MapSystem my_map)
+    bool grabTreasure(coord position,coord tposition, MapSystem my_map)
     {
         if(my_map.getPositionValue(tposition)==6)
         {
@@ -135,10 +144,14 @@ class DHunter : Hunter
         else
             return false;
     }
+    void setPosition(int limit)
+    {
+
+    }
 };
 class LHunter : Hunter
 {
-     bool grabTreasure(coord position,coord tposition, MapSystem my_map)
+    bool grabTreasure(coord position,coord tposition, MapSystem my_map)
     {
         if(my_map.getPositionValue(tposition)==6)
         {
@@ -152,7 +165,7 @@ class LHunter : Hunter
 };
 class RHunter : Hunter
 {
-     bool grabTreasure(coord position,coord tposition, MapSystem my_map)
+    bool grabTreasure(coord position,coord tposition, MapSystem my_map)
     {
         if(my_map.getPositionValue(tposition)==6)
         {
@@ -168,9 +181,16 @@ class RHunter : Hunter
 void Simulate(int rounds)
 {
 
+    for(int t=1;t<=rounds;t++)
+    {
+
+    }
 }
 
 int main()
 {
+    MapSystem my_map;
+    my_map.load_map();
+    my_map.print_map();
     return 0;
 }
