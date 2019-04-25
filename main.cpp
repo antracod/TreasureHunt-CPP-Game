@@ -11,7 +11,16 @@ class MapSystem
 private:
     int map_array[100][100];
     int limit;
+    int treasure_count = 3;
 public:
+    int getTreasureCount()
+    {
+        return treasure_count;
+    }
+    void removeTreasure()
+    {
+        treasure_count--;
+    }
     int getPositionValue(coord position)
     {
         return map_array[position.x][position.y];
@@ -62,22 +71,31 @@ class Hunter
 {
 private:
     coord position;
+    bool can_move=1;
 
 public:
-    virtual bool grabTreasure(coord position,coord tposition,MapSystem my_map)
+     virtual void setPosition(coord new_position)
+    {
+        position = new_position;
+    }
+    virtual bool grabTreasure(coord position,MapSystem my_map)
     {
         if(my_map.getPositionValue(tposition)==6)
         {
             my_map.setPositionValue(position,0);
-            my_map.setPositionValue(tposition,0);
+            my_map.setPositionValue(position,0);
             return true;
         }
         else
             return false;
     }
-    virtual void setPosition(coord new_position)
+    virtual bool getCanMove()
     {
-        position = new_position;
+        return can_move;
+    }
+    virtual void disableMovement()
+    {
+        can_move = 0;
     }
     coord getPosition()
     {
@@ -119,7 +137,7 @@ public:
 
 class UHunter : Hunter
 {
-    bool grabTreasure(coord position,coord tposition, MapSystem my_map)
+    bool grabTreasure(coord position, MapSystem my_map)
     {
         if(my_map.getPositionValue(tposition)==6)
         {
@@ -133,7 +151,7 @@ class UHunter : Hunter
 };
 class DHunter : Hunter
 {
-    bool grabTreasure(coord position,coord tposition, MapSystem my_map)
+    bool grabTreasure(coord position, MapSystem my_map)
     {
         if(my_map.getPositionValue(tposition)==6)
         {
@@ -151,7 +169,7 @@ class DHunter : Hunter
 };
 class LHunter : Hunter
 {
-    bool grabTreasure(coord position,coord tposition, MapSystem my_map)
+    bool grabTreasure(coord position, MapSystem my_map)
     {
         if(my_map.getPositionValue(tposition)==6)
         {
@@ -165,7 +183,7 @@ class LHunter : Hunter
 };
 class RHunter : Hunter
 {
-    bool grabTreasure(coord position,coord tposition, MapSystem my_map)
+    bool grabTreasure(coord position, MapSystem my_map)
     {
         if(my_map.getPositionValue(tposition)==6)
         {
@@ -178,19 +196,39 @@ class RHunter : Hunter
     }
 };
 
-void Simulate(int rounds)
+void Simulate()
 {
+    int rounds;
+    cin>>rounds;
+
+    MapSystem my_map;
+    my_map.load_map();
+
+    UHunter my_UHunter;
+    DHunter my_DHunter;
+    LHunter my_LHunter;
+    RHunter my_RHunter;
 
     for(int t=1;t<=rounds;t++)
     {
+        moveUHunter(my_map,my_UHunter);
+        moveDHunter(my_map,my_DHunter);
+        moveLHunter(my_map,my_LHunter);
+        moveRHunter(my_map,my_DHunter);
+        my_map.print_map();
 
+        if(my_map.treasure_count()==0)
+            break;
+        else if(my_UHunter.can_move()==0 && my_DHunter.can_move()==0 && my_LHunter.can_move()==0 &&  my_RHunter.can_move()==0)
+            break;
     }
+
+    cout<<<<'\n'<<"END GAME";
+
 }
 
 int main()
 {
-    MapSystem my_map;
-    my_map.load_map();
-    my_map.print_map();
+    Simulate();
     return 0;
 }
