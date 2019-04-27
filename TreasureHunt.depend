@@ -10,3 +10,16 @@
 	<string.h>
 	<stdlib.h>
 
+1556391306 source:c:\users\teodor\documents\github\treasurehunt-cpp-game\main.cpp
+	"header.h"
+
+1556294483 c:\users\teodor\documents\github\treasurehunt-cpp-game\header.h
+	<iostream>
+	<fstream>
+	<conio.h>
+	<stdio.h>
+	<string.h>
+	<stdlib.h>
+	<vector>
+	<algorithm>
+

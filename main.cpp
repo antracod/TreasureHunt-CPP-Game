@@ -60,10 +60,14 @@ public:
         {
             for(int j=1; j<=limit; j++)
             {
-                cout<<map_array[i][j]<<" ";
+                if(map_array[i][j]==8)
+                    cout<<"X ";
+                else
+                    cout<<map_array[i][j]<<" ";
             }
             cout<<'\n';
         }
+        cout<<'\n';
     }
 
 };
@@ -75,19 +79,19 @@ private:
     bool can_move=1;
 
 public:
-     virtual void setPosition(coord new_position)
+    virtual void setPosition(coord new_position)
     {
         position = new_position;
     }
-    virtual bool grabTreasure(coord position,MapSystem my_map)
+    virtual bool grabTreasure(coord position,MapSystem &my_map)
     {
         coord tposition;
         tposition.x = position.x;
         tposition.y = position.y;
         if(my_map.getPositionValue(tposition)==6)
         {
-            my_map.setPositionValue(position,0);
-            my_map.setPositionValue(position,0);
+            // my_map.setPositionValue(position,0);
+            // my_map.setPositionValue(position,0);
             return true;
         }
         else
@@ -107,10 +111,12 @@ public:
     }
     bool okMovementUp()
     {
-        if(position.x>1)
+        if(getPosition().x>1)
             return true;
         else
+        {
             return false;
+        }
     }
     bool okMovementDown(int limit)
     {
@@ -137,8 +143,9 @@ public:
         else
             return false;
     }
-    virtual void moveHunterOnMap(MapSystem my_map,int typeValue)
+    void moveHunterOnMap(MapSystem &my_map,int typeValue)
     {
+        bool hasMoved = 0;
         coord next_position;
         if(okMovementUp()==true)
         {
@@ -146,12 +153,52 @@ public:
             next_position.y = position.y;
             if(my_map.getPositionValue(next_position)==0)
             {
-                my_map.setPositionValue(position,0);
-                my_map.setPositionValue(position,typeValue);
-                position.x = next_position.x;
-                position.y = next_position.y;
-
+                my_map.setPositionValue(position,8);
+                my_map.setPositionValue(next_position,typeValue);
+                position = next_position;
+                hasMoved = 1;
             }
+        }
+        if(okMovementDown(my_map.getMapLimit())==true && hasMoved==0)
+        {
+            next_position.x = position.x+1;
+            next_position.y = position.y;
+            if(my_map.getPositionValue(next_position)==0)
+            {
+                my_map.setPositionValue(position,8);
+                my_map.setPositionValue(next_position,typeValue);
+                position = next_position;
+                hasMoved = 1;
+            }
+        }
+        if(okMovementLeft()==true && hasMoved==0)
+        {
+            next_position.x = position.x;
+            next_position.y = position.y-1;
+            if(my_map.getPositionValue(next_position)==0)
+            {
+                cout<<next_position.y;
+                my_map.setPositionValue(position,8);
+                my_map.setPositionValue(next_position,typeValue);
+                position = next_position;
+                hasMoved = 1;
+            }
+        }
+        if(okMovementRight(my_map.getMapLimit())==true && hasMoved==0)
+        {
+            next_position.x = position.x;
+            next_position.y = position.y+1;
+            if(my_map.getPositionValue(next_position)==0)
+            {
+                my_map.setPositionValue(position,8);
+                my_map.setPositionValue(next_position,typeValue);
+                position = next_position;
+                hasMoved = 1;
+            }
+        }
+        if(hasMoved==0)
+        {
+            can_move=false;
         }
     }
 };
@@ -159,15 +206,24 @@ public:
 class UHunter :public Hunter
 {
 private:
-      const int typevalue = 1;
+    const int typevalue = 1;
 public:
+    void setInitialPosition(int limit)
+    {
+        coord tposition;
+        tposition.x = limit;
+        tposition.y = 1;
+        setPosition(tposition);
+    }
     int getTypeValue()
     {
         return typevalue;
     }
-    bool grabTreasure(coord position, MapSystem my_map)
+    bool grabTreasure(MapSystem my_map)
     {
+
         coord tposition;
+        coord position = getPosition();
         tposition.x = position.x;
         tposition.y = position.y;
         if(my_map.getPositionValue(tposition)==6)
@@ -184,15 +240,23 @@ public:
 class DHunter : public Hunter
 {
 private:
-      const int typevalue = 2;
+    const int typevalue = 2;
 public:
+    void setInitialPosition(int limit)
+    {
+        coord tposition;
+        tposition.x = 1;
+        tposition.y = limit;
+        setPosition(tposition);
+    }
     int getTypeValue()
     {
         return typevalue;
     }
-    bool grabTreasure(coord position, MapSystem my_map)
+    bool grabTreasure(MapSystem my_map)
     {
         coord tposition;
+        coord position = getPosition();
         tposition.x = position.x;
         tposition.y = position.y;
         if(my_map.getPositionValue(tposition)==6)
@@ -210,15 +274,23 @@ public:
 class LHunter : public Hunter
 {
 private:
-     const int typevalue = 3;
+    const int typevalue = 3;
 public:
+    void setInitialPosition(int limit)
+    {
+        coord tposition;
+        tposition.x = 1;
+        tposition.y = 1;
+        setPosition(tposition);
+    }
     int getTypeValue()
     {
         return typevalue;
     }
-    bool grabTreasure(coord position, MapSystem my_map)
+    bool grabTreasure(MapSystem my_map)
     {
         coord tposition;
+        coord position = getPosition();
         tposition.x = position.x;
         tposition.y = position.y;
         if(my_map.getPositionValue(tposition)==6)
@@ -239,13 +311,21 @@ class RHunter : public Hunter
 private:
     const int typevalue = 4;
 public:
+    void setInitialPosition(int limit)
+    {
+        coord tposition;
+        tposition.x = limit;
+        tposition.y = limit;
+        setPosition(tposition);
+    }
     int getTypeValue()
     {
         return typevalue;
     }
-    bool grabTreasure(coord position, MapSystem my_map)
+    bool grabTreasure(MapSystem my_map)
     {
         coord tposition;
+        coord position = getPosition();
         tposition.x = position.x;
         tposition.y = position.y;
         if(my_map.getPositionValue(tposition)==6)
@@ -261,6 +341,7 @@ public:
 };
 
 
+
 void Simulate()
 {
     int rounds;
@@ -274,12 +355,23 @@ void Simulate()
     LHunter my_LHunter;
     RHunter my_RHunter;
 
-    for(int t=1;t<=rounds;t++)
+
+    my_UHunter.setInitialPosition(15);
+    my_DHunter.setInitialPosition(15);
+    my_LHunter.setInitialPosition(15);
+    my_RHunter.setInitialPosition(15);
+
+    for(int t=1; t<=rounds; t++)
     {
+
+
         my_UHunter.moveHunterOnMap(my_map,my_UHunter.getTypeValue());
         my_DHunter.moveHunterOnMap(my_map,my_DHunter.getTypeValue());
         my_LHunter.moveHunterOnMap(my_map,my_LHunter.getTypeValue());
         my_RHunter.moveHunterOnMap(my_map,my_RHunter.getTypeValue());
+
+        cout<<"Round "<<t<<" :"<<'\n';
+        cout<<my_UHunter.getCanMove()<<'\n';
         my_map.print_map();
 
         if(my_map.getTreasureCount()==0)
