@@ -178,7 +178,6 @@ public:
             next_position.y = position.y-1;
             if(my_map.getPositionValue(next_position)==0)
             {
-                cout<<next_position.y;
                 my_map.setPositionValue(position,8);
                 my_map.setPositionValue(next_position,typeValue);
                 position = next_position;
@@ -421,8 +420,58 @@ void Simulate()
 
 }
 
+void LoadTitle()
+{
+    cout<<"$$$$$$$$\\ "<<'\n';
+    cout<<"\\__$$  __| "<<'\n';
+    cout<<"   $$ | $$$$$$\\   $$$$$$\\   $$$$$$\\   $$$$$$$\\ $$\\   $$\\  $$$$$$\\   $$$$$$\\        $$ |  $$ |$$\\   $$\\ $$$$$$$\\ $$$$$$\\    $$$$$$\\   $$$$$$\\  "<<'\n';
+    cout<<"   $$ |$$  __$$\\ $$  __$$\\  \\____$$\\ $$  _____|$$ |  $$ |$$  __$$\\ $$  __$$\\       $$$$$$$$ |$$ |  $$ |$$  __$$\\\\_$$  _|  $$  __$$\\ $$  __$$\\ "<<'\n';
+    cout<<"   $$ |$$ |  \\__|$$$$$$$$ | $$$$$$$ |\\$$$$$$\\  $$ |  $$ |$$ |  \\__|$$$$$$$$ |      $$  __$$ |$$ |  $$ |$$ |  $$ | $$ |    $$$$$$$$ |$$ |  \\__|"<<'\n';
+    cout<<"   $$ |$$ |      $$   ____|$$  __$$ | \\____$$\\ $$ |  $$ |$$ |      $$   ____|      $$ |  $$ |$$ |  $$ |$$ |  $$ | $$ |$$\\ $$   ____|$$ |      "<<'\n';
+    cout<<"   $$ |$$ |      \\$$$$$$$\\ \\$$$$$$$ |$$$$$$$  |\\$$$$$$  |$$ |      \\$$$$$$$\\       $$ |  $$ |\\$$$$$$  |$$ |  $$ | \\$$$$  |\\$$$$$$$\\ $$ |      "<<'\n';
+    cout<<"   \\__|\\__|       \\_______| \\_______|\\_______/  \\______/ \\__|       \\_______|      \\__|  \\__| \\______/ \\__|  \\__|  \\____/  \\_____/ \\__/"<<'\n';
+    cout<<'\n';
+}
+
+void LoadMenu()
+{
+    cout<<"1. Start Game \n2. Rules\n3. Options\n4. Quit\n\n";
+}
+
+void LoadRules()
+{
+
+}
+
+void LoadGameScreen()
+{
+    LoadTitle();
+    LoadMenu();
+
+    int option;
+    cin>>option;
+    while(option!=1)
+    {
+        cin>>option;
+        if(option==2)
+        {
+            LoadRules();
+        }
+        else if(option==3)
+        {
+            cout<<"\nEdit map.in to change game configuration\n";
+        }
+    }
+    if(option==1)
+    {
+        cout<<"\n \nEnter Number of rounds :";
+    }
+
+}
+
 int main()
 {
+    LoadGameScreen();
     Simulate();
     return 0;
 }
