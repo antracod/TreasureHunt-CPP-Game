@@ -146,7 +146,7 @@ public:
     {
         bool hasMoved = 0;
         coord next_position;
-         if(can_move==false)
+        if(can_move==false)
             return;
         if(okMovementUp()==true)
         {
@@ -440,7 +440,16 @@ void LoadMenu()
 
 void LoadRules()
 {
-
+    cout<<"There are 4 hunter: \n";
+    cout<<"UHunter - he can grab the treasure only if it is above him\n";
+    cout<<"DHunter - he can grab the treasure only if it is under him\n";
+    cout<<"LHunter - he can grab the treasure only if it is on the left tile of him\n";
+    cout<<"RHunter - he can grab the treasure only if it is on the right tile of him\n";
+    cout<<"They are encoded with 1 2 3 4\n";
+    cout<<"0 = unvisited position\n";
+    cout<<"6 = treasure\n";
+    cout<<"X = visited position\n";
+    cout<<"Move the treasure in map.in to change the simulation"
 }
 
 void LoadGameScreen()
@@ -448,23 +457,24 @@ void LoadGameScreen()
     LoadTitle();
     LoadMenu();
 
-    int option;
-    cin>>option;
+    int option = 0;
     while(option!=1)
     {
         cin>>option;
-        if(option==2)
+        if(option==1)
+        {
+            cout<<"\n \nEnter Number of rounds : ";
+            break;
+        }
+
+        else if(option==2)
         {
             LoadRules();
         }
         else if(option==3)
         {
-            cout<<"\nEdit map.in to change game configuration\n";
+            cout<<"\nEdit map.in to change game configuration\n\n";
         }
-    }
-    if(option==1)
-    {
-        cout<<"\n \nEnter Number of rounds :";
     }
 
 }
