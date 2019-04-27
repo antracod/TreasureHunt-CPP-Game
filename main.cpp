@@ -449,7 +449,7 @@ void LoadRules()
     cout<<"0 = unvisited position\n";
     cout<<"6 = treasure\n";
     cout<<"X = visited position\n";
-    cout<<"Move the treasure in map.in to change the simulation"
+    cout<<"Move the treasure in map.in to change the simulation\n\n";
 }
 
 void LoadGameScreen()
