@@ -12,7 +12,6 @@ private:
     int map_array[100][100];
     int limit;
     int treasure_count = 3;
-    vector <string> winnerList;
 public:
     int getTreasureCount()
     {
@@ -147,6 +146,8 @@ public:
     {
         bool hasMoved = 0;
         coord next_position;
+         if(can_move==false)
+            return;
         if(okMovementUp()==true)
         {
             next_position.x = position.x-1;
@@ -219,16 +220,16 @@ public:
     {
         return typevalue;
     }
-    bool grabTreasure(MapSystem my_map)
+    bool grabTreasure(MapSystem &my_map)
     {
 
         coord tposition;
         coord position = getPosition();
-        tposition.x = position.x;
+        tposition.x = position.x-1;
         tposition.y = position.y;
         if(my_map.getPositionValue(tposition)==6)
         {
-            my_map.setPositionValue(position,-1);
+            my_map.setPositionValue(position,8);
             my_map.setPositionValue(tposition,0);
             return true;
         }
@@ -253,15 +254,16 @@ public:
     {
         return typevalue;
     }
-    bool grabTreasure(MapSystem my_map)
+    bool grabTreasure(MapSystem &my_map)
     {
+
         coord tposition;
         coord position = getPosition();
-        tposition.x = position.x;
+        tposition.x = position.x+1;
         tposition.y = position.y;
         if(my_map.getPositionValue(tposition)==6)
         {
-            my_map.setPositionValue(position,-2);
+            my_map.setPositionValue(position,8);
             my_map.setPositionValue(tposition,0);
             return true;
         }
@@ -287,15 +289,16 @@ public:
     {
         return typevalue;
     }
-    bool grabTreasure(MapSystem my_map)
+    bool grabTreasure(MapSystem &my_map)
     {
+
         coord tposition;
         coord position = getPosition();
         tposition.x = position.x;
-        tposition.y = position.y;
+        tposition.y = position.y-1;
         if(my_map.getPositionValue(tposition)==6)
         {
-            my_map.setPositionValue(position,-3);
+            my_map.setPositionValue(position,8);
             my_map.setPositionValue(tposition,0);
             return true;
         }
@@ -322,15 +325,16 @@ public:
     {
         return typevalue;
     }
-    bool grabTreasure(MapSystem my_map)
+    bool grabTreasure(MapSystem &my_map)
     {
+
         coord tposition;
         coord position = getPosition();
         tposition.x = position.x;
-        tposition.y = position.y;
+        tposition.y = position.y+1;
         if(my_map.getPositionValue(tposition)==6)
         {
-            my_map.setPositionValue(position,-4);
+            my_map.setPositionValue(position,8);
             my_map.setPositionValue(tposition,0);
             return true;
         }
@@ -356,19 +360,54 @@ void Simulate()
     RHunter my_RHunter;
 
 
-    my_UHunter.setInitialPosition(15);
-    my_DHunter.setInitialPosition(15);
-    my_LHunter.setInitialPosition(15);
-    my_RHunter.setInitialPosition(15);
+    my_UHunter.setInitialPosition(my_map.getMapLimit());
+    my_DHunter.setInitialPosition(my_map.getMapLimit());
+    my_LHunter.setInitialPosition(my_map.getMapLimit());
+    my_RHunter.setInitialPosition(my_map.getMapLimit());
 
     for(int t=1; t<=rounds; t++)
     {
+        /// UHUNTER
+        if(my_UHunter.grabTreasure(my_map)==true)
+        {
+            my_UHunter.disableMovement();
+        }
+        else if(my_UHunter.getCanMove()==true)
+        {
+            my_UHunter.moveHunterOnMap(my_map,my_UHunter.getTypeValue());
+        }
 
 
-        my_UHunter.moveHunterOnMap(my_map,my_UHunter.getTypeValue());
-        my_DHunter.moveHunterOnMap(my_map,my_DHunter.getTypeValue());
-        my_LHunter.moveHunterOnMap(my_map,my_LHunter.getTypeValue());
-        my_RHunter.moveHunterOnMap(my_map,my_RHunter.getTypeValue());
+        /// DHUNTER
+        if(my_DHunter.grabTreasure(my_map)==true)
+        {
+            my_DHunter.disableMovement();
+        }
+        else if(my_DHunter.getCanMove()==true)
+        {
+            my_DHunter.moveHunterOnMap(my_map,my_DHunter.getTypeValue());
+        }
+
+        /// LHUNTER
+        if(my_LHunter.grabTreasure(my_map)==true)
+        {
+            my_LHunter.disableMovement();
+        }
+        else if(my_LHunter.getCanMove()==true)
+        {
+            my_LHunter.moveHunterOnMap(my_map,my_LHunter.getTypeValue());
+        }
+
+        if(my_RHunter.grabTreasure(my_map)==true)
+        {
+            my_RHunter.disableMovement();
+        }
+        else if(my_RHunter.getCanMove()==true)
+        {
+            my_RHunter.moveHunterOnMap(my_map,my_RHunter.getTypeValue());
+        }
+
+
 
         cout<<"Round "<<t<<" :"<<'\n';
         cout<<my_UHunter.getCanMove()<<'\n';
